@@ -1,0 +1,9 @@
+{ "version": "0.0.0"
+, "summary": "library for base64 encoding and decoding"
+, "description": "This is a library for base64 encoding and decoding."
+, "license": "MIT"
+, "repository": "https://github.com/avh4/elm-base64.git"
+, "exposed-modules": ["Base64"]
+, "elm-version": "0.13"
+, "dependencies":{ "deadfoxygrandpa/Elm-Test" : "0.3.4" }
+}
