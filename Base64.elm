@@ -17,8 +17,13 @@ partitionBits (a,b,c) =
   , (b `and` 15 `shiftLeft` 2) + (c `shiftRightLogical` 6)
   , c `and` 63 ]
 
+toTuple : [Int] -> (Int, Int, Int)
+toTuple list = case list of
+  a :: b :: c :: [] -> (a, b, c)
+  _ -> (0, 0, 0) -- TODO
+
 encode : String -> String
-encode s = fromList <| List.map i2c <| partitionBits (97, 97, 97)
+encode s = fromList <| List.map i2c <| partitionBits <| toTuple [97, 97, 97]
 
 decode : String -> Maybe String
 decode s = Just s
