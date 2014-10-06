@@ -4,13 +4,20 @@ import Base64
 import ElmTest.Assertion (..)
 import ElmTest.Test (..)
 
+encodeTest : (String, String) -> Test
+encodeTest (s,b) = Base64.encode s `equals` b
+
+decodeTest : (String, String) -> Test
+decodeTest (s,b) = Base64.decode b `equals` Just s
+
+examples = [
+  ("aaa", "YWFh"),
+  ("my updated file contents", "bXkgdXBkYXRlZCBmaWxlIGNvbnRlbnRz"),
+  ("a", "YQ=="),
+  ("aa", "YWE=")
+  ]
+
 suite = Suite "Base64" [
-  Suite "encode" [
-    Base64.encode "a" `equals` "YQ==",
-    Base64.encode "my updated file contents" `equals` "bXkgdXBkYXRlZCBmaWxlIGNvbnRlbnRz"
-    ],
-  Suite "decode" [
-    Base64.decode "YQ==" `equals` Just "a",
-    Base64.decode "bXkgdXBkYXRlZCBmaWxlIGNvbnRlbnRz" `equals` Just "my updated file contents"
-    ]
+  Suite "encode" <| map encodeTest examples,
+  Suite "decode" <| map decodeTest examples
   ]
