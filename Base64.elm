@@ -1,6 +1,7 @@
 module Base64 (encode, decode) where
 
 import Array
+import Bitwise (..)
 import List
 import String (..)
 
@@ -9,8 +10,15 @@ chars = Array.fromList ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', '
 i2c : Int -> Char
 i2c i = Array.getOrFail i chars
 
+partitionBits : (Int,Int,Int) -> [Int]
+partitionBits (a,b,c) =
+  [ a `shiftRightLogical` 2
+  , (a `and` 3 `shiftLeft` 4) + (b `shiftRightLogical` 4)
+  , (b `and` 15 `shiftLeft` 2) + (c `shiftRightLogical` 6)
+  , c `and` 63 ]
+
 encode : String -> String
-encode s = fromList <| List.map i2c [24, 22, 5, 33]
+encode s = fromList <| List.map i2c <| partitionBits (97, 97, 97)
 
 decode : String -> Maybe String
 decode s = Just s
